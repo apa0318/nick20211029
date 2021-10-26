@@ -15,19 +15,18 @@ export default defineComponent({
       // 基於準備好的Dom,初始化echart 實例 (add ! 避免ts2345 null 的錯誤訊息)
       const chartDom = document.getElementById('myEcharts')!;
       const myChart = echarts.init(chartDom);
-        let json_url =
-          'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/asset/data/aqi-beijing.json';
-    //   let json_url = 'http://10.65.51.240:28081/api/v1/eegData';
+      // let json_url =
+      //   'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/asset/data/aqi-beijing.json';
+      let json_url = 'http://10.65.51.240:28081/api/v1/eegData';
       let data: never[];
       axios
         .get(json_url)
         .then((res) => {
           // 請求成功
           console.log('請求成功', res);
-
           data = res.data as never[];
-        // console.log('first', data[0]);
-         let data1 = data[0]
+          console.log('first', data[0]);
+          let data1 = data[0];
           let option = {
             title: {
               text: 'Chart Demo',
@@ -45,17 +44,20 @@ export default defineComponent({
             ],
             xAxis: [
               {
+                type: 'value',
+                data: [0]
+              },
+            ],
+            yAxis: [
+              {
                 id: 'xAis',
-                type: 'category',
+                type: 'value',
                 axisTick: {
                   alignWithLabel: true,
                 },
-                data: data.map(function (item: string[]) {
-                  return item[0];
-                }),
+                data:data1,
               },
             ],
-            yAxis: [{}],
             toolbox: {
               right: 10,
               feature: {
@@ -94,44 +96,6 @@ export default defineComponent({
                 type: 'inside',
               },
             ],
-            visualMap: {
-              top: 50,
-              right: 10,
-              pieces: [
-                {
-                  gt: 0,
-                  lte: 50,
-                  color: '#93CE07',
-                },
-                {
-                  gt: 50,
-                  lte: 100,
-                  color: '#FBDB0F',
-                },
-                {
-                  gt: 100,
-                  lte: 150,
-                  color: '#FC7D02',
-                },
-                {
-                  gt: 150,
-                  lte: 200,
-                  color: '#FD0100',
-                },
-                {
-                  gt: 200,
-                  lte: 300,
-                  color: '#AA069F',
-                },
-                {
-                  gt: 300,
-                  color: '#AC3B2A',
-                },
-              ],
-              outOfRange: {
-                color: '#999',
-              },
-            },
             series: [
               {
                 name: 'AQI chart',
@@ -141,6 +105,7 @@ export default defineComponent({
                 yAxisIndex: 0,
                 data: data.map(function (item: number[]) {
                   return item[0];
+                  alert(item[0]);
                 }),
                 markLine: {
                   silent: true,
