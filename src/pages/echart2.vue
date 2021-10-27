@@ -1,6 +1,7 @@
 <template>
     <div class="echarts-box">
         <div id="myEcharts" :style="{ width: '900px', height: '300px' }"></div>
+        <p>{{xaxis_start}}</p>
     </div>
 </template>
 
@@ -11,6 +12,9 @@ import * as echarts from 'echarts';
 
 export default defineComponent({
     setup () {
+      let numArray = [];
+      let xaxis_start;
+      let xaxis_end;
         onMounted(() => {
             // 基於準備好的Dom,初始化echart 實例 (add ! 避免ts2345 null 的錯誤訊息)
             const chartDom = document.getElementById('myEcharts')!;
@@ -26,7 +30,6 @@ export default defineComponent({
                 end_time;
 
             let data: never[];
-            // number是512
             function count (number: number) {
                 const arr = [];
                 // 基底
@@ -46,17 +49,25 @@ export default defineComponent({
                     // 請求成功
                     console.log('請求成功', res);
                     data = res.data as never[];
-                    let data1 = data[0];
+                    let data1 = data[1];
                     let option = {
                         title: {
                             text: 'Label Demo',
                             left: '1%',
+                            top: '2%'
                         },
                         tooltip: {
                             trigger: 'axis',
+                            axisPointer:{
+                                type:'shadow',
+                                crossStyle:{
+                                    color:'#fff'
+                                }
+                            }
                         },
                         grid: [
                             {
+                                top:'40%',
                                 left: '8%',
                             },
                         ],
@@ -68,13 +79,14 @@ export default defineComponent({
 
                         yAxis: [
                             {
+                                name:'μv',
                                 type: 'value',
                                 scale: true,
                             },
                         ],
 
                         toolbox: {
-                            right: 10,
+                            right: 80,
                             feature: {
                                 dataZoom: {
                                     yAxisIndex: 'none',
@@ -113,9 +125,8 @@ export default defineComponent({
                         ],
                         series: [
                             {
-                                name: 'AQI chart',
+                                name: '電位μv',
                                 type: 'line',
-
                                 smooth: true,
                                 xAxisIndex: 0,
                                 yAxisIndex: 0,
@@ -137,12 +148,8 @@ export default defineComponent({
                     });
 
                     myChart.on('brushSelected', function (paraams: any) {
-                        let numArray = [];
-                        let xaxis_start;
-                        let xaxis_end;
                         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
                         let brushComponent = paraams.batch[0];
-
                         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                         if (brushComponent.areas[0] !== undefined) {
                             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
