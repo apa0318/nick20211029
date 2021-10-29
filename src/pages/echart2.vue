@@ -1,7 +1,6 @@
 <template>
     <div class="echarts-box">
         <div id="myEcharts" :style="{ width: '900px', height: '300px' }"></div>
-        <p>{{xaxis_start}}</p>
     </div>
 </template>
 
@@ -22,7 +21,7 @@ export default defineComponent({
             // let json_url =
             //   'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/asset/data/aqi-beijing.json';
             let start_time = 0;
-            let end_time = 1;
+            let end_time = 2;
             // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
             let json_url = 'http://10.65.51.240:28081/api/v1/eegData?start_time=' +
                 start_time +
@@ -49,7 +48,7 @@ export default defineComponent({
                     // 請求成功
                     console.log('請求成功', res);
                     data = res.data as never[];
-                    let data1 = data[1];
+                    let data1 = data[0];
                     let option = {
                         title: {
                             text: 'Label Demo',
@@ -136,15 +135,15 @@ export default defineComponent({
                     };
 
                     myChart.on('mouseover', function (params: any) {
-                        console.log('滑鼠一過去的index');
+                        // console.log('滑鼠一過去的index');
                         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                        console.log('我是dataindex', params.dataIndex);
+                        // console.log('我是dataindex', params.dataIndex);
                         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                        console.log('轉換成x軸', option.series[0].data[params.dataIndex]);
+                        console.log('y軸', option.series[0].data[params.dataIndex]);
                         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                        console.log('我再轉換成x軸', option.xAxis.data[params.dataIndex]); // 轉換成我們要的時間
+                        console.log('x軸', option.xAxis.data[params.dataIndex]); // 轉換成我們要的時間
                         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                        console.log('我是option.series', option.series);
+                        // console.log('我是option.series', option.series);
                     });
 
                     myChart.on('brushSelected', function (paraams: any) {
@@ -157,10 +156,10 @@ export default defineComponent({
                             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
                             xaxis_start = brushComponent.areas[0].coordRange[0][0];
                             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-                            xaxis_end = brushComponent.areas[0].coordRange[0][0];
-                            console.log('numArray', numArray);
-                            console.log('start', xaxis_start);
-                            console.log('end', xaxis_end);
+                            xaxis_end = brushComponent.areas[0].coordRange[0][1];
+                            // console.log('numArray', numArray);
+                            // console.log('start', xaxis_start);
+                            // console.log('end', xaxis_end);
                             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/restrict-plus-operands
                             console.log('Range of :' + option.xAxis.data[xaxis_start] + ' second 到 ' + option.xAxis.data[xaxis_end] + ' second');
                         }
