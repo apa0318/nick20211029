@@ -1,6 +1,6 @@
 <template>
   <div class="echarts-box">
-    <div id="myEcharts" :style="{ width: '125%', height: '100%' }"></div>
+    <div id="myEcharts" :style="{ width: '125%', height: 160*channel.length+'px' }"></div>
   </div>
 </template>
 
@@ -8,7 +8,14 @@
 import { defineComponent, onMounted } from 'vue';
 import * as echarts from 'echarts';
 
+const channel = ['1', '2', '3', '4', '5', '6', '7'];
+
 export default defineComponent({
+  data() {
+    return {
+      channel: channel
+    }
+  },
   setup() {
     onMounted(() => {
       type EChartsOption = echarts.EChartsOption;
@@ -27,7 +34,6 @@ export default defineComponent({
       var option: EChartsOption;
 
       const x_data = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-      const channel = ['1', '2', '3', '4', '5', '6', '7'];
 
       const data_ = [820, 932, 901, 934, 1290, 1330, 1320];
 
@@ -60,7 +66,7 @@ export default defineComponent({
         });
 
         grid.push({
-          height: '25%',
+          height: '100px',
           // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
           top: (idx * 320) / 2 + 35 + 'px',
         });
@@ -98,17 +104,17 @@ export default defineComponent({
       option && myChart.setOption(option);
 
     //   自适应高和宽
-      window.onresize = function () {
+/*      window.onresize = function () {
         resizeMyChartContainer();
         myChart.resize();
-      };
+      };*/
     });
   },
 });
 </script>
 
 <style scoped>
-#echarts-box:first-child {
+/*#echarts-box:first-child {
   height: '1000px';
-}
+}*/
 </style>
